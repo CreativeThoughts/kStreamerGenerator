@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+	
+	<aop:config proxy-target-class="true"> 
+		<aop:pointcut id="taskCheck" expression="execution(* au.com.cba.cep.adobe.serviceimpl.*.*(..))" />
+    	<aop:advisor pointcut-ref="taskCheck" advice-ref="taskRetryAdvice" />
+	</aop:config>
+
+	<bean id="taskRetryAdvice" class="org.springframework.batch.retry.interceptor.RetryOperationsInterceptor">
+	    <property name="RetryOperations" ref="taskBatchRetryTemplate" />
+	</bean>
+	
+	<bean id="taskBatchRetryTemplate" class="org.springframework.batch.retry.support.RetryTemplate">
+	   <property name="retryPolicy" ref="taskBatchRetryPolicy" />
+	   <property name="backOffPolicy" ref="ExponentialBackOffPolicy" />
+	</bean>
+
+	<bean id="taskBatchRetryPolicy" class="org.springframework.batch.retry.policy.SimpleRetryPolicy">
+	    <constructor-arg index="0" value="${audiencemanager.retry.count}"/>
+	    <constructor-arg index="1">
+	        <map>
+	            <entry key="au.com.cba.cep.adobe.exceptions.AudienceManagerRestAPIException" value="true"/>
+  	        </map>
+	    </constructor-arg>
+	</bean>
+	
+	<bean id="ExponentialBackOffPolicy" class="org.springframework.batch.retry.backoff.ExponentialBackOffPolicy">
+	    <property name="initialInterval" value="${audiencemanager.retry.initial.interval.ms}" >
+	        <description>Initial sleep interval value, default 30000 ms</description>
+	    </property>
+	    <property name="maxInterval" value="${audiencemanager.retry.max.interval.ms}" >
+	        <description>The maximum value of the backoff period in milliseconds.</description>
+	    </property>
+	    <property name="multiplier" value="${audiencemanager.retry.interval.multiplier}" >
+	        <description>The value to increment the exp seed with for each retry attempt.</description>
+	    </property>
+	 </bean>
+</beans>

@@ -1,0 +1,8 @@
+{
+  "topicProcessorMapping": [
+    {
+      "topicName": "test-topic",
+      "eventProcessor": "your-custom-processor"
+    }
+  ]
+}
