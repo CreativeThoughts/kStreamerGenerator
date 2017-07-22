@@ -1,0 +1,86 @@
+<configuration>
+	<appender name="FILELEVEL"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>trace/trace.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>trace/trace.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+			<maxFileSize>10MB</maxFileSize>  
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>TRACE</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder 
+			by default -->
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}; LOG_LEVEL="%level"; %X{STREAMER} SOURCE="%logger{35}";%X{BEP_KAFKA_LOGS}%X{BEP_EVENT_IDS}%X{BEP_EVENT_STATUS}; EVENT_MESSAGE="%msg";%n
+			</pattern>
+		</encoder>
+	</appender>
+	<appender name="DEBUGLevel"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>debug/debug.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+		<!-- rollover daily -->
+			<fileNamePattern>debug/debug.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+		 	<maxFileSize>10MB</maxFileSize>  
+			<maxHistory>2</maxHistory>
+			<totalSizeCap>2GB</totalSizeCap>
+		</rollingPolicy>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>DEBUG</level>
+			<onMatch>${DEBUG_LOG_SWITCH}</onMatch>
+			<onMismatch>DENY</onMismatch>			
+		</filter>
+		
+		<!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder 
+			by default -->
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}; LOG_LEVEL="%level"; %X{STREAMER} SOURCE="%logger{35}";%X{BEP_KAFKA_LOGS}%X{BEP_EVENT_IDS}%X{BEP_EVENT_STATUS}; EVENT_MESSAGE="%msg";%n
+			</pattern>
+		</encoder>
+	</appender>
+	<appender name="FILEThreshold"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>logs/threshold.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>logs/threshold.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+			<maxFileSize>10MB</maxFileSize> 
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>${LOG_LEVEL}</level>
+		</filter>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>DEBUG</level>
+			<onMatch>DENY</onMatch>			
+		</filter>
+		<!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder 
+			by default -->
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}; LOG_LEVEL="%level"; %X{STREAMER} SOURCE="%logger{35}";%X{BEP_KAFKA_LOGS}%X{BEP_EVENT_IDS}%X{BEP_EVENT_STATUS}; EVENT_MESSAGE="%msg";%n
+			</pattern>
+		</encoder>
+	</appender>
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder 
+			by default -->
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}; LOG_LEVEL="%level"; %X{STREAMER} SOURCE="%logger{35}";%X{BEP_KAFKA_LOGS}%X{BEP_EVENT_IDS}%X{BEP_EVENT_STATUS}; EVENT_MESSAGE="%msg";%n
+			</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>${LOG_LEVEL}</level>
+		</filter>
+	</appender>
+	
+	<logger name="org" level="${ORG_LOG_LEVEL}" />
+
+	<root level="TRACE">
+		<appender-ref ref="FILELEVEL" />
+		<appender-ref ref="FILEThreshold" />
+		<appender-ref ref="CONSOLE" />
+	</root>
+</configuration>

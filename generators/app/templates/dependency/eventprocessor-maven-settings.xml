@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings
+    xsi:schemaLocation = "http://maven.apache.org/SETTINGS/1.1.0 http://maven.apache.org/xsd/settings-1.1.0.xsd"
+    xmlns = "http://maven.apache.org/SETTINGS/1.1.0"
+    xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance">
+    <profiles>
+     <profile>
+		<repositories>
+		  <repository>
+			<snapshots>
+			  <enabled>false</enabled>
+			</snapshots>
+			<id>central</id>
+			<name>gist-virtual-release</name>
+			<url>http://artifactory.dev.cba/artifactory/gist-maven/</url>
+		  </repository>
+		  <repository>
+			<snapshots />
+			<id>snapshots</id>
+			<name>gist-virtual-dev</name>
+			<url>http://artifactory.dev.cba/artifactory/gist-maven/</url>
+		  </repository>
+		   <repository>
+			<snapshots />
+			<id>snapshots</id>
+			<name>dna-virtual-dev</name>
+			<url>http://artifactory.dev.cba/artifactory/dna-docker-dev-local/</url>
+		  </repository>
+		   <repository>
+			<snapshots />
+			<id>snapshots</id>
+			<name>cep</name>
+			<url>http://artifactory.dev.cba/artifactory/cep/</url>
+		  </repository>
+		</repositories>
+		<pluginRepositories>
+		  <pluginRepository>
+			<snapshots>
+			  <enabled>false</enabled>
+			</snapshots>
+			<id>central</id>
+			<name>gist-virtual-release</name>
+			<url>http://artifactory.dev.cba/artifactory/gist-maven/</url>
+		  </pluginRepository>
+		  <pluginRepository>
+			<snapshots />
+			<id>snapshots</id>
+			<name>gist-virtual-dev</name>
+			<url>http://artifactory.dev.cba/artifactory/gist-maven/</url>
+		  </pluginRepository>
+		  <pluginRepository>
+			<snapshots />
+			<id>snapshots</id>
+			<name>dna-virtual-dev</name>
+			<url>http://artifactory.dev.cba/artifactory/dna-docker-dev-local/</url>
+		  </pluginRepository>
+		</pluginRepositories>
+      <id>ameventprocessor-dev</id>
+    </profile>
+    </profiles>
+</settings>
